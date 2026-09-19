@@ -5,18 +5,18 @@
 [![Language: C](https://img.shields.io/badge/Language-C%20%2F%20Assembly-orange.svg)](https://en.wikipedia.org/wiki/C_(programming_language))
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Bare-metal implementation of the classic Tetris game developed for the **LandTiger development board** powered by the **NXP LPC1768 (ARM Cortex-M3)** microcontroller[cite: 30]. The system runs directly on bare silicon without an RTOS, leveraging hardware timers, nested vectored interrupt controllers (NVIC), memory-mapped registers, direct-drive TFT display routines, onboard ADC conversion, and real-time audio synthesis[cite: 30].
+Bare-metal implementation of the classic Tetris game developed for the **LandTiger development board** powered by the **NXP LPC1768 (ARM Cortex-M3)** microcontroller. The system runs directly on bare silicon without an RTOS, leveraging hardware timers, nested vectored interrupt controllers (NVIC), memory-mapped registers, direct-drive TFT display routines, onboard ADC conversion, and real-time audio synthesis.
 
 ---
 
 ## Technical Highlights & Hardware Architecture
 
-- **Bare-Metal Event-Driven Design:** Operates without operating system overhead; all timing constraints, state transitions, and user inputs are mediated via hardware ISRs and polling loops[cite: 30].
+- **Bare-Metal Event-Driven Design:** Operates without operating system overhead; all timing constraints, state transitions, and user inputs are mediated via hardware ISRs and polling loops.
 - **Core Peripheral Drivers:**
-  - **Hardware Timers (`timer/`):** Configured with match registers to govern the gravitational fall speed (1 block/s baseline, 2 blocks/s during soft drop) and provide reference clock ticks[cite: 30].
-  - **Repetitive Interrupt Timer (`RIT/`):** Periodic sampling engine for mechanical input debouncing (directional joystick and push buttons)[cite: 30].
-  - **External Interrupts (`button_EXINT/`):** Edge-triggered asynchronous interrupts (EINT) assigned to physical buttons (KEY1 for Pause/Play toggle, KEY2 for instantaneous Hard Drop)[cite: 30].
-  - **Colour TFT Display (`GLCD/`):** Direct low-level frame buffer interface for the onboard 320x240 LCD[cite: 30]. Employs differential redraw algorithms to update only moving, rotated, or cleared blocks, preventing screen flickering[cite: 30].
+  - **Hardware Timers (`timer/`):** Configured with match registers to govern the gravitational fall speed (1 block/s baseline, 2 blocks/s during soft drop) and provide reference clock ticks.
+  - **Repetitive Interrupt Timer (`RIT/`):** Periodic sampling engine for mechanical input debouncing (directional joystick and push buttons).
+  - **External Interrupts (`button_EXINT/`):** Edge-triggered asynchronous interrupts (EINT) assigned to physical buttons (KEY1 for Pause/Play toggle, KEY2 for instantaneous Hard Drop).
+  - **Colour TFT Display (`GLCD/`):** Direct low-level frame buffer interface for the onboard 320x240 LCD. Employs differential redraw algorithms to update only moving, rotated, or cleared blocks, preventing screen flickering.
   - **Touch Digitizer (`TouchPanel/`):** Low-level driver routines configured for resistive touch screen detection.
 - **Advanced Extensions (Part 2):**
   - **Analog-to-Digital Converter (`IRQ_adc.c`, `lib_adc.c`, `adc.h`):** Interrupt-driven ADC peripheral management sampling onboard potentiometer voltage levels.
@@ -28,14 +28,14 @@ Bare-metal implementation of the classic Tetris game developed for the **LandTig
 
 | Feature / Module | Technical Description |
 | :--- | :--- |
-| **Grid Dimensions** | $20 \times 10$ block playing grid on the left screen area; live status panel (Score, High Score, Lines) on the right[cite: 30]. |
-| **Drop Speed (Gravity)** | 1 block/second nominal drop speed driven by hardware timer match interrupts[cite: 30]. |
-| **Input Controls** | **Joystick Left/Right:** Translation. **Joystick Up:** Clockwise $90^\circ$ rotation[cite: 30]. |
-| **Soft & Hard Drop** | **Joystick Down:** Doubles drop frequency to 2 blocks/s[cite: 30]. **KEY2:** Instant vertical hard drop[cite: 30]. |
-| **Line Clearing** | Real-time row full-state checks, line elimination, and downward memory cascading[cite: 30]. |
+| **Grid Dimensions** | $20 \times 10$ block playing grid on the left screen area; live status panel (Score, High Score, Lines) on the right. |
+| **Drop Speed (Gravity)** | 1 block/second nominal drop speed driven by hardware timer match interrupts. |
+| **Input Controls** | **Joystick Left/Right:** Translation. **Joystick Up:** Clockwise $90^\circ$ rotation. |
+| **Soft & Hard Drop** | **Joystick Down:** Doubles drop frequency to 2 blocks/s[cite: 30]. **KEY2:** Instant vertical hard drop. |
+| **Line Clearing** | Real-time row full-state checks, line elimination, and downward memory cascading]. |
 | **Audio & ADC** | Onboard sound engine for music playback with potentiometer-driven analog controls. |
-| **Scoring Engine** | Placement: +10 pts; Single line: +110 pts; Multi-line: +$100 \times n$ pts; Tetris (4 lines): +610 pts[cite: 30]. |
-| **State Machine** | States: `PAUSED`, `RUNNING`, `GAME_OVER`. Preserves high scores across sessions[cite: 30]. |
+| **Scoring Engine** | Placement: +10 pts; Single line: +110 pts; Multi-line: +$100 \times n$ pts; Tetris (4 lines): +610 pts. |
+| **State Machine** | States: `PAUSED`, `RUNNING`, `GAME_OVER`. Preserves high scores across sessions. |
 
 ---
 
